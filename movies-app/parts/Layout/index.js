@@ -1,4 +1,3 @@
-
 import { useEffect } from 'react';
 import { useDispatch } from 'react-redux';
 
@@ -8,6 +7,8 @@ import MyHead from 'components/MyHead';
 import SearchBar from 'containers/SearchBar';
 import DarkModeToggle from 'containers/DarkModeToggle';
 import TheUser from 'containers/TheUser';
+import DemoBanner from 'components/DemoBanner';
+import { LOGO_IMAGE_PATH } from 'utils/constants/image-paths';
 import MainWrapper from './MainWrapper';
 import ContentWrapper from './ContentWrapper';
 import init from 'actions/init';
@@ -30,6 +31,7 @@ const Layout = ({
   return (
     <>
       <MyHead />
+      <DemoBanner />
       {/**
        * TODO: it could be more efficient in using markups.
        * children is duplicated -> looks like it affects the performance (a little).
@@ -48,19 +50,52 @@ const Layout = ({
         <Media greaterThan='sm'>
           <MainWrapper theme={theme}>
             <Sidebar />
-            <div className='desktop-widgets-container'>
-              <SearchBar id='desktop' />
-              <DarkModeToggle
-                id='desktop'
-                className='left-margin' />
-              <TheUser />
+            <div className='desktop-header-container'>
+              <div className='logo-container'>
+                <img
+                  className='logo-img'
+                  width='56'
+                  height='56'
+                  src={LOGO_IMAGE_PATH}
+                  alt='movie ticket' />
+              </div>
+              <div className='desktop-widgets-container'>
+                <SearchBar id='desktop' />
+                <DarkModeToggle
+                  id='desktop'
+                  className='left-margin' />
+                <TheUser />
+              </div>
             </div>
             <style jsx>{`
-              .desktop-widgets-container {
-                position: absolute;
-                top: 0;
+              .desktop-header-container {
+                position: fixed;
+                top: 30px;
+                left: 0;
                 right: 0;
-                padding: 2rem;
+                width: 100%;
+                display: flex;
+                justify-content: space-between;
+                align-items: center;
+                padding: 0.5rem 2rem;
+                z-index: ${theme.zIndex.appBar + 10};
+                background-color: var(--palette-background-paper);
+              }
+              
+              .logo-container {
+                display: flex;
+                align-items: center;
+                margin-left: 15px;
+              }
+              
+              .logo-img {
+                max-height: 56px;
+                width: auto;
+                margin-top: -10px;
+                margin-bottom: -10px;
+              }
+              
+              .desktop-widgets-container {
                 display: flex;
                 align-items: center;
               }
@@ -75,6 +110,7 @@ const Layout = ({
           </MainWrapper>
         </Media>
       </MediaContextProvider>
+      <DemoBanner />
     </>
   );
 };
